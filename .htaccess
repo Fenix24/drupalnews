@@ -175,8 +175,11 @@ AddEncoding gzip svgz
 
 # Various header fixes.
 <IfModule mod_headers.c>
-  # Disable content sniffing, since it's an attack vector.
-  Header always set X-Content-Type-Options nosniff
-  # Disable Proxy header, since it's an attack vector.
-  RequestHeader unset Proxy
+    Header add Access-Control-Allow-Origin "*"
+    Header add Access-Control-Allow-Headers "origin, content-type"
+    Header add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
 </IfModule>
+
+RewriteEngine On                  
+RewriteCond %{REQUEST_METHOD} OPTIONS 
+RewriteRule ^(.*)$ blank.html [QSA,L]
